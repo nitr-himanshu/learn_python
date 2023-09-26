@@ -1,4 +1,4 @@
-# Python
+# Python : Introduction
 
 Python is a popular high-level programming language known for its readability and simplicity. It is widely used for various purposes, including web development, data analysis, artificial intelligence, scientific computing, and more.
 
@@ -65,6 +65,23 @@ Hence, development with python is faster and portable.
 ### Anaconda 2.5.0
 
 https://www.anaconda.com/download
+
+## Key points
+
+### Indentation
+
+- Unlike other programming language, indentation in python is mandatory.
+- A block is highlighted using indentation in python.
+- Do not mix indentation using spaces or tabs.
+
+### Comment
+
+- Single-line comment using hash symbol (#)
+- Multi-line comment using triple quotes(""")
+
+### Docstring
+
+- Comment to show the programs work.
 
 ## References
 
