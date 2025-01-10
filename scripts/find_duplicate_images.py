@@ -12,7 +12,7 @@ def get_file_checksum(file_path):
 
 def find_duplicates(directory):
     """Find and return duplicate images based on file checksum."""
-    valid_extensions = ('.jpg', '.jpeg', '.png', '.heic')
+    valid_extensions = ('.jpg', '.jpeg', '.png', '.heic', '.mp4', '.mov')
     checksum_map = {}
     total_files = 0
     for root, _, files in os.walk(directory):
@@ -31,26 +31,36 @@ def find_duplicates(directory):
     print(f"Found {len(duplicates)} sets of duplicates.")
     return duplicates
 
-def move_duplicates(duplicates, base_output_directory):
-    """Move duplicate images to separate folders with numeric names."""
-    folder_count = 1
+def move_files(originals_directory, duplicates_directory, duplicates):
+    """Move original and duplicate images to their respective directories."""
+    if not os.path.exists(originals_directory):
+        os.makedirs(originals_directory)
+    if not os.path.exists(duplicates_directory):
+        os.makedirs(duplicates_directory)
+    
     for duplicate_set in duplicates:
-        output_directory = os.path.join(base_output_directory, str(folder_count))
-        if not os.path.exists(output_directory):
-            os.makedirs(output_directory)
+        # Find the file with the shortest name to keep as the original
+        original_file = min(duplicate_set, key=lambda x: len(os.path.basename(x)))
         for file_path in duplicate_set:
-            # Move each file in the duplicate set to the output directory
             file_name = os.path.basename(file_path)
-            shutil.move(file_path, os.path.join(output_directory, file_name))
-        print(f"Moved set {folder_count} of duplicates.")
-        folder_count += 1
+            if file_path == original_file:
+                shutil.move(file_path, os.path.join(originals_directory, file_name))
+                print(f"Moved original {file_name} to {originals_directory}")
+            else:
+                shutil.move(file_path, os.path.join(duplicates_directory, file_name))
+                print(f"Moved duplicate {file_name} to {duplicates_directory}")
 
 def main():
     source_directory = "E:\\OneDrive\\#Unsorted"
-    base_output_directory = "E:\\dups"
+    originals_directory = "E:\\originals"
+    duplicates_directory = "E:\\dups35"
+    
     duplicates = find_duplicates(source_directory)
-    move_duplicates(duplicates, base_output_directory)
-    print(f"Moved duplicate images to separate folders in: {base_output_directory}")
+    
+    move_files(originals_directory, duplicates_directory, duplicates)
+    
+    print(f"Moved original images to: {originals_directory}")
+    print(f"Moved duplicate images to: {duplicates_directory}")
 
 if __name__ == "__main__":
     main()
